@@ -5,11 +5,15 @@ allCountries1 = ["United States", "Canada", "Afghanistan", "Albania", "Algeria",
 
 yearsList = []
 
-moviesBList = []
+moviesBechdelList = []
 passFailsList = []
-movieYearsBList = []
+movieYearsBechdelList = []
 
 topMoviesList = []
+
+netflixContentList = []
+netflixCountryList = []
+netflixReleaseYearsList = []
 
 topMoviesStar1 = []
 topMoviesStar2 = []
@@ -22,10 +26,16 @@ baconMoviesfromTop = []
 coStarsOfBacon = []
 coStarsWithBacon = []
 
-# for yearsIndex in range(126):
-#     #make a list of all years between 1900-2025
-#     yearsList.append(yearsIndex + 1900)
-#     yearsIndex += 1
+for yearsIndex in range(126):
+    #make a list of all years between 1900-2025
+    yearsList.append(yearsIndex + 1900)
+    yearsIndex += 1
+
+# this function is used later to remove all the instances of Kevin Bacon from a list of actors
+# I used the website https://www.geeksforgeeks.org/remove-all-the-occurrences-of-an-element-from-a-list-in-python/
+def remove_items(test_list, item): 
+   res = [i for i in test_list if i != item]
+   return res
 
 #https://www.analyticsvidhya.com/blog/2021/08/python-tutorial-working-with-csv-file-for-data-science/
 # I used this website to learn how to traverse .csv files 
@@ -35,9 +45,21 @@ with open('bechdelTest.csv', 'r') as csvfile:
   # Create a reader object
   csv_reader = csv.reader(csvfile)
   for row in csv_reader:
-      moviesBList.append(row[2])
+      moviesBechdelList.append(row[2])
       passFailsList.append(row[3])
-      movieYearsBList.append(row[1])
+      movieYearsBechdelList.append(row[1])
+
+with open('netflixContent.csv', 'r') as csvfile:
+   csv_reader = csv.reader(csvfile)
+   for row in csv_reader:
+      netflixContentList.append(row[2])
+      netflixCountryList.append(row[3])
+      if row[0] != "id":
+         netflixReleaseYearsList.append(float(row[5]))
+
+for count in range(len(netflixReleaseYearsList) - 1):
+   netflixReleaseYearsList[count] = int(netflixReleaseYearsList[count])
+#converts all years into int values because they had a .0 at the end in the csv file
 
 with open('imdbTopThousandMovies.csv', 'r', encoding="utf8") as csvfile:
   csv_reader2 = csv.reader(csvfile)
@@ -57,23 +79,23 @@ for i in range(4):
             coStarsWithBacon.append(topMoviesStar2[j])
             coStarsWithBacon.append(topMoviesStar3[j])
             coStarsWithBacon.append(topMoviesStar4[j])
+# if Kevin Bacon is in a movie, add all the stars of that movie to a list of his costars, then remove all the instances of Kevin Bacon
 
-# coStarsListLength = len(coStarsOfBacon) - 1
-# for k in range(coStarsListLength):
-#     coStarsOfBacon.remove("Kevin Bacon")
-coStarsOfBacon = coStarsWithBacon.remove("Kevin Bacon")
-# not sure how to remove all instances of Kevin bacon frtom the list costars of bacon, START HERE
-#STARTHERE^
-#STARTHERE|
-#STARTHERE|
-#STARTHERE|
-#STARTHERE|
+coStarsOfBacon = remove_items(coStarsWithBacon, "Kevin Bacon")
             
+
+
+#Setup ends here ________________________________________________________________________________________________
+
+
+
+
 print(baconMoviesfromTop)
 print(coStarsOfBacon)
-    
-    
-  
+print(netflixReleaseYearsList[4])
+
+# Kevin bacon is in the 1994 film, The River Wild, on Netflix
+
 #Alison Bechdel created the Bechdel test in 1985, the same year in which Kevin Bacon starred in the movie, "The Little Sister"
 
 
